@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PostCrew — App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="logo" href="index.html" style="text-decoration:none"><i></i>PostCrew</a>
+    <button class="linkbtn hidden" id="logoutTop">Log out</button>
+  </div>
+</nav>
+
+<main class="app-main">
+
+  <!-- loading -->
+  <div id="loading" class="card" style="text-align:center;color:var(--muted)">Loading…</div>
+
+  <!-- auth -->
+  <div id="authView" class="card hidden" style="max-width:420px;margin:30px auto">
+    <h2 id="authTitle" style="margin:0 0 4px;letter-spacing:-.02em">Log in</h2>
+    <p id="authSub" style="color:var(--muted);margin:0 0 18px;font-size:14.5px">Welcome back to PostCrew.</p>
+    <form id="authForm">
+      <div class="field"><label for="aEmail">Email</label><input id="aEmail" type="email" required autocomplete="email"></div>
+      <div class="field" id="pwField"><label for="aPass">Password</label><input id="aPass" type="password" minlength="6" required autocomplete="current-password"><small id="pwHint" class="hidden">At least 6 characters.</small></div>
+      <button class="btn grad" style="width:100%" type="submit" id="authBtn">Log in</button>
+      <div class="err" id="authErr"></div><div class="okmsg" id="authOk"></div>
+    </form>
+    <p style="font-size:14px;color:var(--muted);margin:6px 0 0;text-align:center">
+      <button class="linkbtn" id="toggleMode">New here? Create a free account</button><br>
+      <button class="linkbtn" id="forgot" style="margin-top:8px;color:var(--muted);font-weight:500">Forgot password?</button>
+    </p>
+  </div>
+
+  <!-- new password (after recovery link) -->
+  <div id="resetView" class="card hidden" style="max-width:420px;margin:30px auto">
+    <h2 style="margin:0 0 14px">Set a new password</h2>
+    <form id="resetForm">
+      <div class="field"><label>New password</label><input id="newPass" type="password" minlength="6" required autocomplete="new-password"></div>
+      <button class="btn grad" style="width:100%" type="submit">Save password</button>
+      <div class="err" id="resetErr"></div>
+    </form>
+  </div>
+
+  <!-- app -->
+  <div id="appView" class="hidden">
+    <div class="card usage">
+      <div><div style="font-size:13px;color:var(--muted)" id="whoami"></div><b id="planName"></b> · <span id="usageText"></span><div class="meter"><i id="meter"></i></div></div>
+      <button class="btn grad" id="upgradeTop" style="padding:9px 14px;font-size:14px">Upgrade</button>
+    </div>
+
+    <div class="tabsA">
+      <button data-t="create" class="on">Create</button>
+      <button data-t="history">History</button>
+      <button data-t="brand">Brand</button>
+      <button data-t="account">Account</button>
+    </div>
+
+    <!-- create -->
+    <section id="t-create" style="padding:0">
+      <div class="card hidden" id="needBrand">
+        <h3>First, tell your agent about your brand</h3>
+        <p>It takes one minute and every post will follow it.</p>
+        <button class="btn grad" style="margin-top:12px" id="goBrand">Set up my brand</button>
+      </div>
+      <form class="card" id="genForm">
+        <h3 style="margin-bottom:14px">New content plan</h3>
+        <div class="field"><label>Platforms</label>
+          <div class="chk" id="platforms"></div>
+        </div>
+        <div class="field"><label for="goal">Goal</label>
+          <input id="goal" maxlength="300" placeholder="e.g. Promote our weekend brunch offer">
+          <div class="chk" id="goalChips" style="margin-top:8px"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="count">Number of posts</label><select id="count"></select></div>
+          <div class="field"><label for="lang">Language</label>
+            <select id="lang"><option>English</option><option>Portuguese (Portugal)</option><option>Portuguese (Brazil)</option><option>Spanish</option><option>French</option><option>German</option><option>Italian</option><option>Urdu</option><option>Hindi</option><option>Arabic</option></select></div>
+        </div>
+        <div class="field"><label for="extra">Anything else? <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+          <textarea id="extra" maxlength="500" placeholder="e.g. Mention free delivery in Cascais. No emojis on LinkedIn."></textarea></div>
+        <button class="btn grad" style="width:100%" id="genBtn" type="submit">Create content plan</button>
+        <div class="err" id="genErr"></div>
+      </form>
+      <div id="results"></div>
+    </section>
+
+    <!-- history -->
+    <section id="t-history" class="hidden" style="padding:0">
+      <div class="card"><h3 style="margin-bottom:8px">Your content plans</h3><div id="histList"></div></div>
+    </section>
+
+    <!-- brand -->
+    <section id="t-brand" class="hidden" style="padding:0">
+      <form class="card" id="brandForm">
+        <h3 style="margin-bottom:14px">Your brand</h3>
+        <div class="field"><label for="bName">Brand name</label><input id="bName" maxlength="80" required placeholder="e.g. Lisbon Bakery"></div>
+        <div class="field"><label for="bDesc">What do you do or sell?</label><textarea id="bDesc" maxlength="1000" required placeholder="e.g. Family bakery in Cascais. Fresh pastéis de nata, sourdough and vegan croissants. Open 7am–7pm, delivery via Uber Eats."></textarea></div>
+        <div class="field"><label for="bAud">Who are your customers?</label><input id="bAud" maxlength="300" placeholder="e.g. Locals, families and tourists in Cascais"></div>
+        <div class="field"><label for="bTone">Tone of voice</label><input id="bTone" maxlength="100" placeholder="e.g. Warm, fun, a little cheeky"></div>
+        <button class="btn grad" style="width:100%" type="submit">Save brand</button>
+        <div class="err" id="brandErr"></div><div class="okmsg" id="brandOk"></div>
+      </form>
+    </section>
+
+    <!-- account -->
+    <section id="t-account" class="hidden" style="padding:0">
+      <div class="card">
+        <h3>Your plan</h3>
+        <p id="accPlan" style="margin:6px 0 16px"></p>
+        <div class="plans" style="grid-template-columns:1fr 1fr;gap:10px" id="upgradeBox">
+          <div class="card plan" style="padding:16px"><h3>Starter</h3><div class="price" style="font-size:32px">€9<span>/mo</span></div><ul style="margin:10px 0 14px"><li>30 plans a month</li><li>Up to 14 posts each</li></ul><button class="btn grad buy" data-plan="starter">Choose Starter</button></div>
+          <div class="card plan" style="padding:16px"><h3>Pro</h3><div class="price" style="font-size:32px">€29<span>/mo</span></div><ul style="margin:10px 0 14px"><li>150 plans a month</li><li>Up to 30 posts each</li></ul><button class="btn pri buy" data-plan="pro">Choose Pro</button></div>
+        </div>
+        <button class="btn hidden" id="portalBtn" style="width:100%;margin-top:12px">Manage billing &amp; invoices</button>
+        <div class="err" id="billErr"></div>
+      </div>
+      <div class="card"><button class="btn" id="logout" style="width:100%">Log out</button></div>
+    </section>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const params=new URLSearchParams(location.search);
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove("show"),3000)}
+function show(id){["loading","authView","resetView","appView"].forEach(v=>$("#"+v).classList.toggle("hidden",v!==id))}
+
+let cfg=null, me=null, session=null, mode="login";
+const PLATFORMS=["Instagram","Facebook","TikTok","LinkedIn","X","Threads"];
+const GOALS=["Get more followers","Promote an offer","Launch a new product","Bring customers to my shop","Build trust"];
+
+/* ---------- session (Supabase Auth over plain fetch) ---------- */
+function saveSession(s){session=s;try{s?localStorage.setItem("pc_session",JSON.stringify(s)):localStorage.removeItem("pc_session")}catch(e){}}
+function loadSession(){try{return JSON.parse(localStorage.getItem("pc_session")||"null")}catch(e){return null}}
+function fromAuthResponse(d){return{access_token:d.access_token,refresh_token:d.refresh_token,expires_at:d.expires_at||Math.floor(Date.now()/1000)+(d.expires_in||3600)}}
+async function auth(path,body,method="POST",token){
+  const h={apikey:cfg.supabaseAnonKey,"Content-Type":"application/json"};if(token)h.Authorization="Bearer "+token;
+  const r=await fetch(cfg.supabaseUrl+"/auth/v1/"+path,{method,headers:h,body:body?JSON.stringify(body):undefined});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.error_description||d.msg||d.message||"Something went wrong");
+  return d;
+}
+async function token(){
+  if(!session)return null;
+  if(session.expires_at-Date.now()/1000<60){
+    try{saveSession(fromAuthResponse(await auth("token?grant_type=refresh_token",{refresh_token:session.refresh_token})))}
+    catch(e){saveSession(null);show("authView");return null}
+  }
+  return session.access_token;
+}
+async function api(path,opts={}){
+  const t=await token();
+  const r=await fetch("/api/"+path,{method:opts.method||"GET",headers:{"Content-Type":"application/json",...(t?{Authorization:"Bearer "+t}:{})},body:opts.body?JSON.stringify(opts.body):undefined});
+  const d=await r.json().catch(()=>({error:"Server error"}));
+  if(r.status===401){saveSession(null);setMode("login");show("authView")}
+  if(!r.ok){const e=new Error(d.error||"Something went wrong");e.status=r.status;throw e}
+  return d;
+}
+
+/* ---------- auth UI ---------- */
+function setMode(m){mode=m;
+  $("#authTitle").textContent={login:"Log in",signup:"Create your free account",forgot:"Reset your password"}[m];
+  $("#authSub").textContent={login:"Welcome back to PostCrew.",signup:"3 free content plans. No card needed.",forgot:"We'll email you a reset link."}[m];
+  $("#authBtn").textContent={login:"Log in",signup:"Create account",forgot:"Send reset link"}[m];
+  $("#toggleMode").textContent=m==="login"?"New here? Create a free account":"Already have an account? Log in";
+  $("#pwField").classList.toggle("hidden",m==="forgot");$("#aPass").required=m!=="forgot";
+  $("#pwHint").classList.toggle("hidden",m!=="signup");$("#aPass").autocomplete=m==="signup"?"new-password":"current-password";
+  $("#forgot").classList.toggle("hidden",m!=="login");$("#authErr").textContent="";$("#authOk").textContent="";
+}
+$("#toggleMode").onclick=()=>setMode(mode==="login"?"signup":"login");
+$("#forgot").onclick=()=>setMode("forgot");
+$("#authForm").onsubmit=async e=>{
+  e.preventDefault();$("#authErr").textContent="";$("#authOk").textContent="";
+  const email=$("#aEmail").value.trim(),password=$("#aPass").value,btn=$("#authBtn");btn.disabled=true;
+  const back=location.origin+"/app.html"+(params.get("plan")?"?plan="+params.get("plan"):"");
+  try{
+    if(mode==="forgot"){await auth("recover?redirect_to="+encodeURIComponent(location.origin+"/app.html"),{email});$("#authOk").textContent="Check your email for a reset link.";}
+    else if(mode==="signup"){
+      const d=await auth("signup?redirect_to="+encodeURIComponent(back),{email,password});
+      if(d.access_token){saveSession(fromAuthResponse(d));await start()}
+      else $("#authOk").textContent="Almost done! Open the link we emailed you to confirm your account.";
+    } else {saveSession(fromAuthResponse(await auth("token?grant_type=password",{email,password})));await start()}
+  }catch(err){$("#authErr").textContent=err.message.includes("Invalid login")?"Wrong email or password.":err.message}
+  btn.disabled=false;
+};
+$("#resetForm").onsubmit=async e=>{e.preventDefault();
+  try{await auth("user",{password:$("#newPass").value},"PUT",await token());toast("Password updated");history.replaceState(null,"","app.html");await start()}
+  catch(err){$("#resetErr").textContent=err.message}};
+function logout(){const t=session&&session.access_token;if(t)auth("logout",null,"POST",t).catch(()=>{});saveSession(null);me=null;setMode("login");show("authView");$("#logoutTop").classList.add("hidden")}
+$("#logout").onclick=logout;$("#logoutTop").onclick=logout;
+
+/* ---------- app ---------- */
+function renderUsage(){const u=me.usage;
+  $("#whoami").textContent=me.email;$("#planName").textContent=u.planName;
+  $("#usageText").textContent=`${u.used} of ${u.limit} plans used this month`;
+  $("#meter").style.width=Math.min(100,u.used/u.limit*100)+"%";
+  $("#upgradeTop").classList.toggle("hidden",u.plan==="pro");
+  const paid=u.plan!=="free";
+  $("#accPlan").innerHTML=paid?`You're on <b>${esc(u.planName)}</b>${me.subscriptionStatus&&me.subscriptionStatus!=="active"?` (${esc(me.subscriptionStatus.replace("_"," "))})`:""}. ${u.limit} content plans a month, up to ${u.maxPosts} posts each.`:`You're on the <b>Free trial</b>: ${u.limit} content plans, up to ${u.maxPosts} posts each.`;
+  $$(".buy").forEach(b=>{const cur=b.dataset.plan===u.plan;b.disabled=cur;b.textContent=cur?"Current plan":(paid?"Switch to ":"Choose ")+b.dataset.plan[0].toUpperCase()+b.dataset.plan.slice(1)});
+  $("#portalBtn").classList.toggle("hidden",!me.hasBilling);
+  const sel=$("#count"),cur=Number(sel.value)||7;sel.innerHTML=[3,5,7,10,14,21,30].filter(n=>n<=u.maxPosts).map(n=>`<option ${n===Math.min(cur,u.maxPosts)?"selected":""}>${n}</option>`).join("");
+}
+function renderBrand(){const b=me.brand||{};$("#bName").value=b.name||"";$("#bDesc").value=b.description||"";$("#bAud").value=b.audience||"";$("#bTone").value=b.tone||"";
+  $("#needBrand").classList.toggle("hidden",!!me.brand);$("#genForm").classList.toggle("hidden",!me.brand)}
+function postText(p){return [p.hook,p.caption,(p.hashtags||[]).join(" ")].filter(Boolean).join("\n\n")}
+async function copy(t,btn){try{await navigator.clipboard.writeText(t);if(btn){const o=btn.textContent;btn.textContent="Copied ✓";setTimeout(()=>btn.textContent=o,1500)}}catch(e){toast("Couldn't copy — select the text instead")}}
+function renderPlan(g){
+  const posts=g.posts||[];window._posts=posts;
+  $("#results").innerHTML=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px"><div><h3 style="margin:0">${posts.length} posts ready</h3><p style="font-size:13px">${esc((g.input&&g.input.goal)||"")}</p></div><button class="btn" id="copyAll" style="padding:8px 12px;font-size:13px">Copy all</button></div>`+
+    posts.map((p,i)=>`<div class="post"><div class="meta"><span>Day ${p.day}</span><span>${esc(p.platform)}</span>${p.format?`<span>${esc(p.format)}</span>`:""}${p.best_time?`<span>🕒 ${esc(p.best_time)}</span>`:""}</div>
+      ${p.hook?`<div class="hook">${esc(p.hook)}</div>`:""}<div class="cap">${esc(p.caption)}</div>
+      ${(p.hashtags||[]).length?`<div class="tags">${esc(p.hashtags.join(" "))}</div>`:""}
+      ${p.visual?`<div class="vis">🎨 ${esc(p.visual)}</div>`:""}
+      <button class="btn copy" data-i="${i}">Copy post</button></div>`).join("")+`</div>`;
+  $$("#results .copy").forEach(b=>b.onclick=()=>copy(postText(posts[b.dataset.i]),b));
+  $("#copyAll").onclick=e=>copy(posts.map(p=>`DAY ${p.day} · ${p.platform}\n${postText(p)}`).join("\n\n———\n\n"),e.target);
+}
+function renderHistory(){const list=me.generations||[];
+  $("#histList").innerHTML=list.length?list.map((g,i)=>`<div class="hist" data-i="${i}"><div><b>${esc((g.input&&g.input.goal)||"Content plan")}</b><span>${new Date(g.created_at).toLocaleDateString()} · ${(g.posts||[]).length} posts · ${esc(((g.input&&g.input.platforms)||[]).join(", "))}</span></div><span style="color:var(--a)">Open ›</span></div>`).join(""):`<p>No content plans yet. Create your first one!</p>`;
+  $$("#histList .hist").forEach(h=>h.onclick=()=>{renderPlan(list[h.dataset.i]);tab("create");$("#results").scrollIntoView({behavior:"smooth"})});
+}
+function tab(t){$$(".tabsA button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));["create","history","brand","account"].forEach(x=>$("#t-"+x).classList.toggle("hidden",x!==t))}
+$$(".tabsA button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
+$("#goBrand").onclick=()=>tab("brand");
+$("#upgradeTop").onclick=()=>tab("account");
+
+$("#platforms").innerHTML=PLATFORMS.map((p,i)=>`<label><input type="checkbox" value="${p}" ${i<2?"checked":""}>${p}</label>`).join("");
+$("#goalChips").innerHTML=GOALS.map(g=>`<label style="font-size:13px;padding:6px 10px"><input type="radio" name="gc" value="${g}" style="display:none">${g}</label>`).join("");
+$$("#goalChips input").forEach(r=>r.onchange=()=>{$("#goal").value=r.value});
+
+$("#brandForm").onsubmit=async e=>{e.preventDefault();$("#brandErr").textContent="";$("#brandOk").textContent="";
+  try{const d=await api("brand",{method:"POST",body:{name:$("#bName").value,description:$("#bDesc").value,audience:$("#bAud").value,tone:$("#bTone").value}});
+    me.brand=d.brand;renderBrand();$("#brandOk").textContent="Saved ✓";setTimeout(()=>tab("create"),700)}
+  catch(err){$("#brandErr").textContent=err.message}};
+
+$("#genForm").onsubmit=async e=>{e.preventDefault();const btn=$("#genBtn"),err=$("#genErr");err.innerHTML="";
+  const platforms=$$("#platforms input:checked").map(i=>i.value);
+  if(!platforms.length){err.textContent="Pick at least one platform.";return}
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Your agent is writing… (about a minute)';
+  try{const d=await api("generate",{method:"POST",body:{platforms,goal:$("#goal").value,count:$("#count").value,language:$("#lang").value,extra:$("#extra").value}});
+    me.usage=d.usage;me.generations=[d.generation,...(me.generations||[])];renderUsage();renderHistory();renderPlan(d.generation);
+    $("#results").scrollIntoView({behavior:"smooth"})}
+  catch(e2){err.innerHTML=esc(e2.message)+(e2.status===402?' <button class="linkbtn" id="upsell">See plans ›</button>':"");const u=$("#upsell");if(u)u.onclick=()=>tab("account")}
+  btn.disabled=false;btn.textContent="Create content plan"};
+
+async function goCheckout(plan){$("#billErr").textContent="";
+  try{const d=await api("checkout",{method:"POST",body:{plan}});location.href=d.url}catch(e){$("#billErr").textContent=e.message;tab("account")}}
+$$(".buy").forEach(b=>b.onclick=()=>{b.disabled=true;goCheckout(b.dataset.plan).finally(()=>b.disabled=false)});
+$("#portalBtn").onclick=async()=>{try{const d=await api("portal",{method:"POST"});location.href=d.url}catch(e){$("#billErr").textContent=e.message}};
+
+async function loadMe(){me=await api("me");renderUsage();renderBrand();renderHistory()}
+
+async function start(){
+  show("loading");
+  await loadMe();
+  show("appView");$("#logoutTop").classList.remove("hidden");
+  if(!me.brand)tab("brand");
+  const plan=params.get("plan");
+  if(plan&&me.usage.plan!==plan&&["starter","pro"].includes(plan)){history.replaceState(null,"","app.html");toast("Opening secure checkout…");goCheckout(plan)}
+  if(params.get("checkout")==="success"){history.replaceState(null,"","app.html");toast("Payment received! Upgrading your plan…");
+    for(let i=0;i<6;i++){await new Promise(r=>setTimeout(r,2500));await loadMe();if(me.usage.plan!=="free")break}
+    toast(me.usage.plan!=="free"?"You're on "+me.usage.planName+" 🎉":"Your plan will update in a moment — refresh soon.")}
+  if(params.get("checkout")==="cancelled"){history.replaceState(null,"","app.html");toast("Checkout cancelled — no charge made.")}
+}
+
+(async function init(){
+  try{cfg=await (await fetch("/api/config")).json();if(cfg.error)throw new Error(cfg.error)}
+  catch(e){$("#loading").textContent="The app isn't configured yet: "+e.message;return}
+  // Links from emails (confirm / reset) put the session in the URL hash.
+  const h=new URLSearchParams(location.hash.slice(1));
+  if(h.get("access_token")){saveSession(fromAuthResponse({access_token:h.get("access_token"),refresh_token:h.get("refresh_token"),expires_in:Number(h.get("expires_in"))||3600}));
+    history.replaceState(null,"",location.pathname+location.search);
+    if(h.get("type")==="recovery"){show("resetView");return}}
+  if(h.get("error_description")){setMode("login");show("authView");$("#authErr").textContent=h.get("error_description").replace(/\+/g," ");return}
+  session=loadSession();
+  if(session){try{await start();return}catch(e){}}
+  setMode(params.get("signup")?"signup":"login");
+  if(params.get("email"))$("#aEmail").value=params.get("email");
+  show("authView");
+})();
+</script>
+</body>
+</html>

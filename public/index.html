@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PostCrew — your AI social media agent</title>
+<meta name="description" content="Tell PostCrew about your brand and get a month of ready-to-post social media content in a minute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><i></i>PostCrew</div>
+    <div class="links" id="links">
+      <a href="#features">Features</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="app.html">Log in</a>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <a class="btn pri" href="app.html?signup=1" style="padding:8px 14px;font-size:14px">Start free</a>
+      <button class="menu" id="menu" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="pill rv"><b>●</b> 3 free content plans · no card needed</span>
+    <h1 class="rv">Your social media, <em>written for you</em></h1>
+    <p class="lead rv">Tell PostCrew about your brand once. Get a full plan of ready-to-post captions, hooks, hashtags and visual ideas for every platform — in about a minute.</p>
+    <form class="signup rv" id="heroForm">
+      <input type="email" id="heroEmail" placeholder="Enter your email" required autocomplete="email">
+      <button class="btn grad" type="submit">Start free</button>
+    </form>
+    <div class="logos rv">Creates content for
+      <div class="row"><span>Instagram</span><span>Facebook</span><span>TikTok</span><span>LinkedIn</span><span>X</span><span>Threads</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sh rv"><small>Features</small><h2>A content team in your pocket</h2><p>Built for small businesses, creators and shops that don't have time to post every day.</p></div>
+    <div class="bento">
+      <div class="card c-4 rv">
+        <h3>A month of posts in one tap</h3>
+        <p>Pick your platforms and your goal. Your agent plans the days, writes every caption and suggests what to film or photograph.</p>
+        <span class="tag">Up to 30 posts per plan</span>
+        <div class="visual term" id="term">
+          <div class="bar"><i></i><i></i><i></i></div>
+          <button class="replay" id="replay">↻ Replay</button>
+          <div class="body" id="termBody"></div>
+        </div>
+      </div>
+      <div class="card c-2 rv">
+        <h3>Every platform's style</h3>
+        <p>Short and punchy for TikTok, professional for LinkedIn, visual for Instagram.</p>
+        <div class="visual"><div class="feed" id="feed"></div></div>
+      </div>
+      <div class="card c-3 rv">
+        <h3>Sounds like you</h3>
+        <p>Save your brand, audience and tone once. Every post follows your voice.</p>
+        <span class="tag">Brand profile remembered</span>
+        <div class="visual chat" id="chat"></div>
+      </div>
+      <div class="card c-3 rv">
+        <h3>Any language</h3>
+        <p>Write in English, Portuguese, Spanish, Urdu, French and more — great for local businesses.</p>
+        <div class="visual orbit" id="orbit">
+          <div class="ring" style="width:150px;height:150px"></div>
+          <div class="ring" style="width:250px;height:250px"></div>
+          <div class="core">PC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sh rv"><small>How it works</small><h2>Three steps, one minute</h2></div>
+    <div class="steps">
+      <div class="card rv"><div class="num">1</div><h3>Describe your brand</h3><p>What you sell, who it's for and how you like to sound.</p></div>
+      <div class="card rv"><div class="num">2</div><h3>Choose your goal</h3><p>More followers, a product launch, a weekend offer — pick platforms and how many posts.</p></div>
+      <div class="card rv"><div class="num">3</div><h3>Copy and post</h3><p>Every post comes with a hook, caption, hashtags, a visual idea and the best time to post.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="sh rv"><small>Pricing</small><h2>Cheaper than one hour of a freelancer</h2><p>Start with 3 free content plans. Cancel anytime.</p></div>
+    <div class="plans">
+      <div class="card plan rv"><h3>Free trial</h3><p>Try it with your own brand</p>
+        <div class="price">€0</div>
+        <ul><li>3 content plans</li><li>Up to 7 posts per plan</li><li>All platforms &amp; languages</li></ul>
+        <a class="btn" href="app.html?signup=1">Start free</a></div>
+      <div class="card plan hot rv"><span class="pop">Most popular</span><h3>Starter</h3><p>For small businesses and creators</p>
+        <div class="price">€9<span>/month</span></div>
+        <ul><li>30 content plans a month</li><li>Up to 14 posts per plan</li><li>All platforms &amp; languages</li><li>Saved history</li></ul>
+        <a class="btn grad" href="app.html?signup=1&plan=starter">Choose Starter</a></div>
+      <div class="card plan rv"><h3>Pro</h3><p>For agencies and busy brands</p>
+        <div class="price">€29<span>/month</span></div>
+        <ul><li>150 content plans a month</li><li>Up to 30 posts per plan</li><li>All platforms &amp; languages</li><li>Saved history</li></ul>
+        <a class="btn pri" href="app.html?signup=1&plan=pro">Choose Pro</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sh rv"><small>FAQ</small><h2>Questions, answered</h2></div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<div class="wrap"><div class="card cta rv"><h2>Stop staring at a blank caption</h2><p>Your first 3 content plans are free.</p><a class="btn" href="app.html?signup=1">Create my first plan</a></div></div>
+
+<footer><div class="wrap"><span>© 2026 PostCrew</span><span><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a></span></div></footer>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+$("#menu").onclick=()=>$("#links").classList.toggle("open");
+$$("#links a").forEach(a=>a.onclick=()=>$("#links").classList.remove("open"));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+$$(".rv").forEach((el,i)=>{el.style.transitionDelay=(i%4)*70+"ms";io.observe(el)});
+
+$("#heroForm").onsubmit=e=>{e.preventDefault();location.href="app.html?signup=1&email="+encodeURIComponent($("#heroEmail").value.trim())};
+
+const lines=[
+  ['cmd','> plan --brand "Lisbon Bakery" --posts 14 --goal "weekend orders"',1],
+  ['g','✔ Read brand profile and tone of voice.'],
+  ['g','✔ Planned 14 days across Instagram, TikTok, Facebook.'],
+  ['g','✔ Wrote hooks and captions in Portuguese.'],
+  ['g','✔ Picked hashtags and best posting times.'],
+  ['b','ℹ Ready to post:'],
+  ['','&nbsp;&nbsp;- 6 Reels / TikToks'],
+  ['','&nbsp;&nbsp;- 5 photo posts'],
+  ['','&nbsp;&nbsp;- 3 carousels'],
+  ['cmd','Done in 48 seconds.',1]
+];
+let termRun=0;
+async function runTerm(){const id=++termRun,body=$("#termBody");body.innerHTML="";
+  for(const [cls,txt,typed] of lines){if(id!==termRun)return;const d=document.createElement("div");d.className="ln "+cls;body.appendChild(d);
+    if(typed){d.classList.add("show");for(let i=0;i<=txt.length;i++){if(id!==termRun)return;d.innerHTML=txt.slice(0,i).replace(/</g,"&lt;")+'<span class="caret"></span>';await sleep(22)}d.textContent=txt;await sleep(250)}
+    else{d.innerHTML=txt;await sleep(30);d.classList.add("show");await sleep(380)}}}
+$("#replay").onclick=runTerm;
+
+const notes=[["Reel script written","TikTok · Day 1","🎬","#fce7f3"],["Carousel: 5 baking tips","Instagram · Day 2","📸","#ede9fe"],["Weekend offer post","Facebook · Day 3","🏷️","#dbeafe"],["Behind the scenes","Instagram · Day 4","☕","#fef3c7"],["Team spotlight","LinkedIn · Day 5","💼","#dcfce7"],["Question for followers","Threads · Day 6","💬","#e0f2fe"]];
+let ni=0;function pushNote(){const [n,d,ic,bg]=notes[ni++%notes.length],el=document.createElement("div");el.className="note";el.innerHTML=`<div class="ic" style="background:${bg}">${ic}</div><div><b>${n}</b><span>${d}</span></div>`;const f=$("#feed");f.prepend(el);while(f.children.length>5)f.lastChild.remove()}
+
+const sats=[];function addSats(arr,r,sp){arr.forEach((t,i)=>{const el=document.createElement("div");el.className="sat";el.style.fontSize="12px";el.style.fontWeight="700";el.textContent=t;$("#orbit").appendChild(el);sats.push({el,r,a:i/arr.length*Math.PI*2,sp})})}
+addSats(["EN","PT","ES"],75,.5);addSats(["UR","FR","DE","IT","AR"],125,-.3);
+let last=performance.now();function orbitLoop(t){const dt=(t-last)/1000;last=t;sats.forEach(s=>{s.a+=s.sp*dt;s.el.style.transform=`translate(${Math.cos(s.a)*s.r}px,${Math.sin(s.a)*s.r}px)`});requestAnimationFrame(orbitLoop)}
+
+const convo=[["u","We're launching a new vegan croissant on Friday"],["ai","Great! I've planned a 5-day teaser: sneak peek, baking video, countdown, launch day and a customer reaction post."],["u","Keep it fun and in Portuguese"],["ai","Done ✓ All 5 captions rewritten in a playful Portuguese tone, with local hashtags."]];
+let chatRun=0;async function runChat(){const id=++chatRun,c=$("#chat");while(id===chatRun){c.innerHTML="";for(const [w,t] of convo){if(id!==chatRun)return;if(w==="ai"){const ty=document.createElement("div");ty.className="msg ai";ty.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';c.appendChild(ty);await sleep(1100);ty.textContent=t}else{const m=document.createElement("div");m.className="msg u";m.textContent=t;c.appendChild(m)}await sleep(1000)}await sleep(3500)}}
+
+const started=new Set();const vio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting||started.has(e.target.id))return;started.add(e.target.id);({term:runTerm,feed:()=>{pushNote();setInterval(pushNote,1800)},orbit:()=>requestAnimationFrame(orbitLoop),chat:runChat})[e.target.id]?.()}),{threshold:.3});
+["#term","#feed","#orbit","#chat"].forEach(s=>vio.observe($(s)));
+
+const faqs=[
+  ["What exactly do I get?","A content plan: for each post you get the platform, format, a scroll-stopping hook, a full caption, hashtags, an idea for the photo or video, and a suggested posting time."],
+  ["Does it post for me?","Not yet. You copy each caption and post it yourself, or paste it into your scheduler. Auto-posting is on our roadmap."],
+  ["What is a content plan?","One request to your agent, like “14 posts for this week's offer”. Starter includes 30 a month, Pro 150."],
+  ["Which languages work?","Most major languages, including English, Portuguese, Spanish, French, German, Italian, Arabic and Urdu."],
+  ["Can I cancel anytime?","Yes. Manage or cancel your subscription in one tap from your account. You keep access until the end of the paid month."]
+];
+$("#faqList").innerHTML=faqs.map(([q,a])=>`<div class="q rv"><button>${q}</button><div class="a"><p>${a}</p></div></div>`).join("");
+$$("#faqList .rv").forEach(el=>io.observe(el));
+$$(".q button").forEach(b=>b.onclick=()=>{const q=b.parentElement,a=q.querySelector(".a"),open=q.classList.contains("open");$$(".q").forEach(x=>{x.classList.remove("open");x.querySelector(".a").style.maxHeight=0});if(!open){q.classList.add("open");a.style.maxHeight=a.scrollHeight+"px"}});
+</script>
+</body>
+</html>

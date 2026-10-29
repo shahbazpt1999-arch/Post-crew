@@ -1,0 +1,12 @@
+{
+  "name": "postcrew",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI social media agent with Stripe subscriptions",
+  "scripts": {
+    "test": "node tests/run.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
