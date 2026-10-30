@@ -18,6 +18,8 @@
 
 <main class="app-main">
 
+  <div id="demoBanner" class="card hidden" style="background:#fff7e6;border-color:#f5c26b;color:#7a4b00;font-size:14px">⚠️ <b>Demo mode:</b> no AI key is set yet, so content plans contain sample posts. Add an AI key in Vercel to switch on real content.</div>
+
   <!-- loading -->
   <div id="loading" class="card" style="text-align:center;color:var(--muted)">Loading…</div>
 
@@ -275,6 +277,7 @@ async function start(){
 (async function init(){
   try{cfg=await (await fetch("/api/config")).json();if(cfg.error)throw new Error(cfg.error)}
   catch(e){$("#loading").textContent="The app isn't configured yet: "+e.message;return}
+  if(cfg.aiMode==="demo")$("#demoBanner").classList.remove("hidden");
   // Links from emails (confirm / reset) put the session in the URL hash.
   const h=new URLSearchParams(location.hash.slice(1));
   if(h.get("access_token")){saveSession(fromAuthResponse({access_token:h.get("access_token"),refresh_token:h.get("refresh_token"),expires_in:Number(h.get("expires_in"))||3600}));

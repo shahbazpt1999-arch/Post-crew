@@ -52,6 +52,49 @@ function parsePosts(text) {
   }));
 }
 
+async function callGemini(prompt) {
+  const model = env("GEMINI_MODEL", "gemini-flash-latest");
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-goog-api-key": env("GEMINI_API_KEY") },
+    body: JSON.stringify({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8000 },
+    }),
+  });
+  const data = await r.json();
+  if (!r.ok) {
+    console.error("Gemini error", data);
+    throw httpError(502, "The AI service is busy. Please try again in a minute.");
+  }
+  const parts = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) || [];
+  return parts.map((p) => p.text || "").join("");
+}
+
+// Demo mode: no AI key set yet. Builds sample posts so the rest of the app can be tested.
+const DEMO_FORMATS = ["Photo post", "Reel / short video", "Carousel", "Story", "Question post", "Behind the scenes", "Offer post"];
+const DEMO_TIMES = ["Mon 12:30", "Tue 18:00", "Wed 19:30", "Thu 13:00", "Fri 18:30", "Sat 11:00", "Sun 17:00"];
+function demoPosts(brand, req) {
+  return Array.from({ length: req.count }, (_, i) => {
+    const platform = req.platforms[i % req.platforms.length];
+    const format = DEMO_FORMATS[i % DEMO_FORMATS.length];
+    return {
+      day: i + 1, platform, format,
+      hook: `[DEMO] ${brand.name}: idea ${i + 1} for "${req.goal}"`,
+      caption: `[DEMO POST — add an AI key to get real captions]\n\nThis is where your agent writes a complete ${format.toLowerCase()} caption for ${platform}, in ${req.language}, in a ${brand.tone || "friendly"} tone, about: ${brand.description}`,
+      hashtags: ["#" + brand.name.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase(), "#demo"],
+      visual: `Demo visual idea for a ${format.toLowerCase()}`,
+      best_time: DEMO_TIMES[i % DEMO_TIMES.length],
+    };
+  });
+}
+
+function aiProvider() {
+  if (process.env.ANTHROPIC_API_KEY) return "claude";
+  if (process.env.GEMINI_API_KEY) return "gemini";
+  return "demo";
+}
+
 async function callClaude(prompt) {
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -98,8 +141,15 @@ module.exports = route(["POST"], async (req, res) => {
     extra: clean(body.extra, 500),
   };
 
-  const text = await callClaude(buildPrompt(brand, request));
-  const posts = parsePosts(text).sort((a, b) => a.day - b.day);
+  const provider = aiProvider();
+  let posts;
+  if (provider === "demo") posts = demoPosts(brand, request);
+  else {
+    const prompt = buildPrompt(brand, request);
+    const text = provider === "claude" ? await callClaude(prompt) : await callGemini(prompt);
+    posts = parsePosts(text).sort((a, b) => a.day - b.day);
+  }
+  request.ai = provider;
 
   const saved = await sb("generations", {
     method: "POST", prefer: "return=representation",

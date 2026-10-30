@@ -104,6 +104,38 @@ const j = async (path, { method = "GET", body, token, headers = {} } = {}) => {
   });
   await t("wrong method rejected", async () => assert.strictEqual((await j("/api/generate")).status, 405));
 
+  console.log("AI providers");
+  const s3 = await j("/fake-supabase/auth/v1/signup", { method: "POST", body: { email: "c@test.com", password: "secret3" } });
+  const t3 = s3.data.access_token;
+  await j("/api/brand", { method: "POST", token: t3, body: { name: "Café Sol", description: "Coffee shop" } });
+  await t("demo mode when no AI key: sample posts, config says demo", async () => {
+    const saved = process.env.ANTHROPIC_API_KEY; delete process.env.ANTHROPIC_API_KEY;
+    try {
+      assert.strictEqual((await j("/api/config")).data.aiMode, "demo");
+      const before = __fake.calls.anthropic.length;
+      const r = await j("/api/generate", { method: "POST", token: t3, body: { platforms: ["Instagram", "TikTok"], count: 5 } });
+      assert.strictEqual(r.status, 200, JSON.stringify(r.data));
+      assert.strictEqual(r.data.generation.posts.length, 5);
+      assert(r.data.generation.posts[0].caption.includes("DEMO"));
+      assert.strictEqual(r.data.generation.posts[1].platform, "TikTok");
+      assert.deepStrictEqual(r.data.generation.posts[0].hashtags, ["#cafésol", "#demo"]);
+      assert.strictEqual(__fake.calls.anthropic.length, before, "Claude must not be called");
+      assert.strictEqual(r.data.usage.used, 1);
+    } finally { process.env.ANTHROPIC_API_KEY = saved; }
+  });
+  await t("Gemini used when only GEMINI_API_KEY is set (key in header, not URL)", async () => {
+    const saved = process.env.ANTHROPIC_API_KEY; delete process.env.ANTHROPIC_API_KEY; process.env.GEMINI_API_KEY = "g-key";
+    try {
+      assert.strictEqual((await j("/api/config")).data.aiMode, "gemini");
+      const r = await j("/api/generate", { method: "POST", token: t3, body: { count: 3 } });
+      assert.strictEqual(r.status, 200, JSON.stringify(r.data));
+      assert.strictEqual(r.data.generation.posts[0].caption, "Gemini caption");
+      const call = __fake.calls.gemini.at(-1);
+      assert(!call.url.includes("g-key") && call.headers["x-goog-api-key"] === "g-key");
+    } finally { process.env.ANTHROPIC_API_KEY = saved; delete process.env.GEMINI_API_KEY; }
+  });
+  await t("Claude preferred when its key is set", async () => assert.strictEqual((await j("/api/config")).data.aiMode, "claude"));
+
   console.log(`\n${passed} passed${process.exitCode ? ", some FAILED" : ""}`);
   process.exit(process.exitCode || 0);
 })();

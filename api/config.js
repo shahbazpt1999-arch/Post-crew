@@ -6,5 +6,6 @@ module.exports = route(["GET"], async (req, res) => {
     supabaseUrl: env("SUPABASE_URL"),
     supabaseAnonKey: env("SUPABASE_ANON_KEY"),
     plans: PLANS,
+    aiMode: process.env.ANTHROPIC_API_KEY ? "claude" : process.env.GEMINI_API_KEY ? "gemini" : "demo",
   });
 });

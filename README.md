@@ -16,7 +16,7 @@ public/        Website: landing page, app, terms, privacy
 api/           Server functions (Vercel): generate, brand, me, checkout, portal, webhook, config
 lib/shared.js  Shared helpers: plans, Supabase, Stripe, login check
 supabase/      Database setup (one SQL file)
-tests/         Offline test server + 24 automated tests (node tests/run.js)
+tests/         Offline test server + 27 automated tests (node tests/run.js)
 ```
 
 To change plan limits, edit `PLANS` in `lib/shared.js`. To change the prices shown on
@@ -40,7 +40,18 @@ Never share the **secret** keys with anyone or put them in the code.
    - **Secret key** (`sb_secret_...`, or `service_role` on older projects) → `SUPABASE_SERVICE_ROLE_KEY` (secret!)
    - Project URL (Project Settings → Data API, like `https://abcd.supabase.co`) → `SUPABASE_URL`
 
-### 2. Claude API key (the AI) — pay as you go
+### 2. AI key — optional at first
+
+**You can skip this step to begin.** With no AI key the app runs in **demo mode**: content plans
+contain sample posts (marked DEMO) and a yellow banner shows in the app, so you can test sign-up,
+brand profile and payments. Add a key before real customers use it.
+
+- **Free option for testing:** Google AI Studio (aistudio.google.com) → Get API key → add it to Vercel
+  as `GEMINI_API_KEY`. Free tier has daily limits and Google may use free-tier data to improve its products,
+  so use it for testing only.
+- **Recommended for customers:** Claude (below). If both keys are set, Claude is used.
+
+#### Claude API key — pay as you go
 
 1. Go to **console.anthropic.com** → sign up → **Billing**: add a small credit (e.g. $5–10).
 2. **Settings → Limits**: set a monthly spend limit so you never get a surprise bill.
@@ -66,7 +77,7 @@ Start in **Test mode** (the toggle at the top). Nothing is charged for real.
 3. Framework preset: **Other**. Leave Build and Output settings empty.
 4. Open **Environment Variables** and add every key from `.env.example`:
    `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`,
-   `ANTHROPIC_MODEL` (`claude-haiku-5-5`), `STRIPE_SECRET_KEY`, `STRIPE_PRICE_STARTER`, `STRIPE_PRICE_PRO`.
+   `ANTHROPIC_MODEL` (`claude-haiku-5-5`) — or `GEMINI_API_KEY`, or neither for demo mode — `STRIPE_SECRET_KEY`, `STRIPE_PRICE_STARTER`, `STRIPE_PRICE_PRO`.
 5. Tap **Deploy**. When it finishes you get an address like `https://postcrew-abc.vercel.app`.
 6. Add one more variable: `SITE_URL` = that address (no slash at the end).
 
@@ -113,6 +124,6 @@ Start in **Test mode** (the toggle at the top). Nothing is charged for real.
 ## Running the tests
 
 ```
-node tests/run.js            # 24 API tests with fake Supabase/Stripe/Claude
+node tests/run.js            # 27 API tests with fake Supabase/Stripe/Claude
 node tests/devserver.js      # full app at http://localhost:4321 with fake services
 ```

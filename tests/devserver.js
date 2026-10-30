@@ -115,6 +115,13 @@ global.fetch = async (url, opts = {}) => {
     const text = "Here you go:\n```json\n" + JSON.stringify(posts) + "\n```";
     return new Response(JSON.stringify({ content: [{ type: "text", text }] }), { status: 200 });
   }
+  if (url.startsWith("https://generativelanguage.googleapis.com")) {
+    const b = JSON.parse(opts.body);
+    calls.gemini = calls.gemini || []; calls.gemini.push({ url, headers: opts.headers, body: b });
+    const n = Number((b.contents[0].parts[0].text.match(/Number of posts: (\d+)/) || [])[1] || 3);
+    const posts = Array.from({ length: n }, (_, i) => ({ day: i + 1, platform: "Instagram", format: "Photo", hook: "G" + i, caption: "Gemini caption", hashtags: ["x"], visual: "v", best_time: "Mon 10:00" }));
+    return new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: JSON.stringify(posts) }] } }] }));
+  }
   if (url.startsWith("https://api.stripe.com")) {
     const p = url.replace("https://api.stripe.com/v1/", "");
     const params = Object.fromEntries(new URLSearchParams(opts.body || ""));
