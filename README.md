@@ -35,10 +35,10 @@ Never share the **secret** keys with anyone or put them in the code.
    Name: `postcrew`, choose a strong database password, region **Europe (Frankfurt or Paris)**.
 2. When it's ready, open **SQL Editor → New query**, paste everything from
    `supabase/schema.sql`, tap **Run**. You should see "Success".
-3. Open **Project Settings → API** and copy:
-   - Project URL → `SUPABASE_URL`
-   - `anon` `public` key → `SUPABASE_ANON_KEY`
-   - `service_role` key → `SUPABASE_SERVICE_ROLE_KEY` (secret!)
+3. Open **Project Settings → API Keys** and copy:
+   - **Publishable key** (`sb_publishable_...`, or `anon` on older projects) → `SUPABASE_ANON_KEY`
+   - **Secret key** (`sb_secret_...`, or `service_role` on older projects) → `SUPABASE_SERVICE_ROLE_KEY` (secret!)
+   - Project URL (Project Settings → Data API, like `https://abcd.supabase.co`) → `SUPABASE_URL`
 
 ### 2. Claude API key (the AI) — pay as you go
 
